@@ -22,11 +22,11 @@ public class EmployerController {
     @Autowired
     private EmployerRepository employerRepository;
 
-// TODO: Controllers 2 **tbd**
+// TODO: Controllers 2 **done**
 //  Add an index method that responds at /employers with a list of all employers in the database.
 //  This method should use the template employers/index.
 
-    @RequestMapping("")
+    @GetMapping
     public String index(Model model) {
         model.addAttribute("title","Employers");
         model.addAttribute("employers", employerRepository.findAll());
@@ -35,6 +35,7 @@ public class EmployerController {
 
     @GetMapping("add")
     public String displayAddEmployerForm(Model model) {
+        model.addAttribute("title", "Add Employer");
         model.addAttribute(new Employer());
         return "employers/add";
     }
@@ -50,10 +51,11 @@ public class EmployerController {
                                     Errors errors, Model model) {
 
         if (errors.hasErrors()) {
+            model.addAttribute("title", "Add Employer");
             return "employers/add";
         }
 
-        employerRepository.save(newEmployer);
+        newEmployer = employerRepository.save(newEmployer);
         return "redirect:";
     }
 
@@ -69,6 +71,7 @@ public class EmployerController {
     public String displayViewEmployer(Model model, @PathVariable int employerId) {
 
         Optional optEmployer = employerRepository.findById(employerId);
+
         if (optEmployer.isPresent()) {
             Employer employer = (Employer) optEmployer.get();
             model.addAttribute("employer", employer);

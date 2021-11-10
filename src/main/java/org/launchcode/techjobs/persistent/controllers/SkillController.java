@@ -44,7 +44,7 @@ public class SkillController {
             return "skills/add";
         }
 
-        skillRepository.save(newSkill);
+        newSkill = skillRepository.save(newSkill);
         return "redirect:";
     }
 

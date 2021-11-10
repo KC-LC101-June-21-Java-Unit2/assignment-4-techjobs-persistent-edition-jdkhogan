@@ -1,4 +1,7 @@
 -- Part 1: Test it with SQL
+-- SELECT * FROM job;
+-- yields (int id,  varchar employer, varchar name, varchar skills)
+
 
 -- Part 2: Test it with SQL
 
