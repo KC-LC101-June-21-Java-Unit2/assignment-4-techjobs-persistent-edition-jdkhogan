@@ -25,7 +25,7 @@ public class SkillController {
 
     @RequestMapping("")
     public String index(Model model) {
-        model.addAttribute("title","Core Comptencies");
+        model.addAttribute("title","Core Competencies");
         model.addAttribute("skills", skillRepository.findAll());
         return "index";
     }
@@ -41,6 +41,8 @@ public class SkillController {
                                     Errors errors, Model model) {
 
         if (errors.hasErrors()) {
+            model.addAttribute("title","Core Competencies");
+            model.addAttribute(newSkill);
             return "skills/add";
         }
 

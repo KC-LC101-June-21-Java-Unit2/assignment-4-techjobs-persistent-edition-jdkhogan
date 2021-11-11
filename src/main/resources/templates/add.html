@@ -29,8 +29,8 @@
 
     <div class="form-group">
         <label>Skills</label>
-        <th:block th:each="skill : ${job.skills}">
-            <input type="checkbox" name="skills" th:value="${skill.id}">
+        <th:block th:each="skill : ${skills}">
+            <input type="checkbox" th:value="skill.id">
             <label th:text="${skill.name}"></label>
         </th:block>
         <a th:href="@{'/skills/add'}">Add Skills</a>

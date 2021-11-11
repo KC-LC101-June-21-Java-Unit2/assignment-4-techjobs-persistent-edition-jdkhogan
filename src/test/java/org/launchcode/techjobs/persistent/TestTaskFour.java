@@ -24,7 +24,7 @@ public class TestTaskFour extends AbstractTest {
     * */
     @Test
     public void testSkillClassHasJobsField () throws ClassNotFoundException {
-        Class skillClass = getClassByName("models.Skill");
+        Class skillClass = getClassByName("models.Skill");`
         Field jobsField = null;
 
         try {
