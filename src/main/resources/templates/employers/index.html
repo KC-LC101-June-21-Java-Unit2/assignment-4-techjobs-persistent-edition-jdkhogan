@@ -6,20 +6,16 @@
 
 <header th:replace="fragments :: page-header"></header>
 
-<h2>Employers</h2>
-<table class="table table-striped">
-    <thead>
-    <tr>
-        <th>Employer</th>
-        <th>Location</th>
-    </tr>
-    </thead>
-    <tr th:each="employer : ${employers}">
-        <td><a th:text="${employer.name}" th:href="'/employers/view/' + ${employer.id}"></a></td>
-        <td th:text="${employer.location}"></td>
-    </tr>
-</table>
-<a th:href="@{'/employers/add'}">Add Employers</a>
+<div class="container body-content">
+    <h2>Employers</h2>
+    <ul>
+        <li th:each="employer : ${employers}">
+            <a th:text="${employer.name}" th:href="'/employers/view/' + ${employer.id}"></a><span th:text="', ' + ${employer.location}"></span>
+        </li>
+    </ul>
+    <a th:href="@{'/employers/add'}">Add Employers</a>
+</div>
+
 
 </body>
 </html>
