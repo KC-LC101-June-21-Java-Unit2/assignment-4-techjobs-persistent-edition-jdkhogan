@@ -15,11 +15,6 @@ import java.util.Optional;
 @RequestMapping("skills")
 public class SkillController {
 
-// TODO: Controllers 5 **done**
-//  Create a SkillController class and replicate the steps you followed above for EmployerController.
-//  The new controller should have the methods, index, displayAddSkillForm, processAddSkillForm, and displayViewSkill.
-//  These methods should behave exactly as the corresponding methods in EmployerController.
-
     @Autowired
     private SkillRepository skillRepository;
 
@@ -37,9 +32,7 @@ public class SkillController {
     }
 
     @PostMapping("add")
-    public String processAddSkillForm(@ModelAttribute @Valid Skill newSkill,
-                                    Errors errors, Model model) {
-
+    public String processAddSkillForm(@ModelAttribute @Valid Skill newSkill, Errors errors, Model model) {
         if (errors.hasErrors()) {
             model.addAttribute("title","Core Competencies");
             model.addAttribute(newSkill);
@@ -50,11 +43,10 @@ public class SkillController {
         return "redirect:";
     }
 
-
     @GetMapping("view/{skillId}")
     public String displayViewSkill(Model model, @PathVariable int skillId) {
-
         Optional optSkill = skillRepository.findById(skillId);
+
         if (optSkill.isPresent()) {
             Skill skill = (Skill) optSkill.get();
             model.addAttribute("skill", skill);
@@ -63,4 +55,5 @@ public class SkillController {
             return "redirect:../";
         }
     }
+
 }
