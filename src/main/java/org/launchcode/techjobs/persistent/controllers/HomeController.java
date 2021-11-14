@@ -14,6 +14,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,7 +53,7 @@ public class HomeController {
     }
 
     @PostMapping("add")
-    public String processAddJobForm(@ModelAttribute @Valid Job newJob, Errors errors, Model model) {
+    public String processAddJobForm(@ModelAttribute Job newJob, @RequestParam int employerId, @RequestParam List<Integer> skills, Errors errors, Model model) {
         if (errors.hasErrors()) {
             model.addAttribute("title", "Add Job");
             model.addAttribute("employers", employerRepository.findAll());
@@ -60,39 +61,23 @@ public class HomeController {
             return "add";
         }
 
+        Optional<Employer> maybeEmployer = employerRepository.findById(employerId);
+        if (maybeEmployer.isPresent()) {
+            Employer employer = maybeEmployer.get();
+            newJob.setEmployer(employer);
+        } else {
+            model.addAttribute("title", "Invalid Employer ID: " + employerId);
+            return "add";
+        }
+
+        List<Skill> skillObjs = (List<Skill>) skillRepository.findAllById(skills);
+        newJob.setSkills(skillObjs);
+
         newJob = jobRepository.save(newJob);
+
         return "redirect:/view/" + newJob.getId();
 
     }
-
-//    TODO: Part 3.3.4 HomeController and Part 4.3 HomeController Again seem to imply that we need to be using request params, but why? My attempt below doesn't work. See corresponding commented code in add.html
-//    @PostMapping("add")
-//    public String processAddJobForm(@ModelAttribute @Valid Job newJob, @RequestParam int employerId,
-//                                    @RequestParam List<Integer> skills, Errors errors, Model model) {
-//        if (errors.hasErrors()) {
-//            model.addAttribute("title", "Add Job");
-//            model.addAttribute("employers", employerRepository.findAll());
-//            model.addAttribute("skills", skillRepository.findAll());
-//            return "add";
-//        }
-//
-//        Optional<Employer> maybeEmployer = employerRepository.findById(employerId);
-//        if (maybeEmployer.isPresent()) {
-//            Employer employer = maybeEmployer.get();
-//            newJob.setEmployer(employer);
-//        } else {
-//            model.addAttribute("title", "Invalid Employer ID: " + employerId);
-//            return "add";
-//        }
-//
-//        List<Skill> skillObjs = (List<Skill>) skillRepository.findAllById(skills);
-//        newJob.setSkills(skillObjs);
-//
-//        newJob = jobRepository.save(newJob);
-//
-//        return "redirect:/view/" + newJob.getId();
-//
-//    }
 
     @GetMapping("view/{jobId}")
     public String displayViewJob(Model model, @PathVariable int jobId) {
