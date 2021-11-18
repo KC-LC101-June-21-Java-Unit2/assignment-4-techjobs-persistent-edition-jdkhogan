@@ -53,7 +53,7 @@ public class HomeController {
     }
 
     @PostMapping("add")
-    public String processAddJobForm(@ModelAttribute Job newJob, @RequestParam int employerId, @RequestParam List<Integer> skills, Errors errors, Model model) {
+    public String processAddJobForm(@ModelAttribute Job newJob, Errors errors, Model model, @RequestParam int employerId, @RequestParam List<Integer> skills) {
         if (errors.hasErrors()) {
             model.addAttribute("title", "Add Job");
             model.addAttribute("employers", employerRepository.findAll());
@@ -61,6 +61,7 @@ public class HomeController {
             return "add";
         }
 
+        // verify that employerId is in DB. Add to newJob if so, return to Add Job page if not.
         Optional<Employer> maybeEmployer = employerRepository.findById(employerId);
         if (maybeEmployer.isPresent()) {
             Employer employer = maybeEmployer.get();
@@ -68,6 +69,15 @@ public class HomeController {
         } else {
             model.addAttribute("title", "Invalid Employer ID: " + employerId);
             return "add";
+        }
+
+        // Loop through all skillIds in DB. Return to Add Job page if any of them are not in DB.
+        for (Integer skillId : skills) {
+            Optional<Skill> maybeSkill = skillRepository.findById(skillId);
+            if (maybeSkill.isEmpty()) {
+                model.addAttribute("title", "Invalid Skill ID: " + skillId);
+                return "add";
+            }
         }
 
         List<Skill> skillObjs = (List<Skill>) skillRepository.findAllById(skills);
