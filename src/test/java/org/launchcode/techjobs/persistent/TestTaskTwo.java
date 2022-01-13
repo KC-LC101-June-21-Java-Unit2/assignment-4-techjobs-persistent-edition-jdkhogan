@@ -4,7 +4,7 @@ import mockit.Expectations;
 import mockit.Mocked;
 import org.junit.jupiter.api.Test;
 import org.launchcode.techjobs.persistent.controllers.EmployerController;
-import org.launchcode.techjobs.persistent.controllers.SkillController;
+import org.launchcode.techjobs.persistent.controllers.DietaryController;
 import org.launchcode.techjobs.persistent.models.data.*;
 import org.launchcode.techjobs.persistent.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -442,7 +442,7 @@ public class TestTaskTwo extends AbstractTest {
             fail("SkillController does not have an skillRepository field");
         }
 
-        assertEquals(SkillRepository.class, skillRepositoryField.getType(), "skillRepository must be of type SkillRepository");
+        assertEquals(DietaryRepository.class, skillRepositoryField.getType(), "skillRepository must be of type SkillRepository");
         assertNotNull(skillRepositoryField.getAnnotation(Autowired.class), "skillRepository must have the @Autowired annotation");
     }
 
@@ -450,7 +450,7 @@ public class TestTaskTwo extends AbstractTest {
      * Verifies that SkillController.index is properly defined
      * */
     @Test
-    public void testSkillControllerIndexMethodDefinition (@Mocked SkillRepository skillRepository) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException, NoSuchFieldException {
+    public void testSkillControllerIndexMethodDefinition (@Mocked DietaryRepository dietaryRepository) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException, NoSuchFieldException {
         Class skillControllerClass = getClassByName("controllers.SkillController");
         Method indexMethod = null;
 
@@ -478,59 +478,59 @@ public class TestTaskTwo extends AbstractTest {
 
         // Verify that index calls skillRepository.findAll()
         new Expectations() {{
-            skillRepository.findAll();
+            dietaryRepository.findAll();
         }};
 
         Model model = new ExtendedModelMap();
-        SkillController skillController = new SkillController();
+        DietaryController dietaryController = new DietaryController();
         Field skillRepositoryField = skillControllerClass.getDeclaredField("skillRepository");
         skillRepositoryField.setAccessible(true);
-        skillRepositoryField.set(skillController, skillRepository);
-        indexMethod.invoke(skillController, model);
+        skillRepositoryField.set(dietaryController, dietaryRepository);
+        indexMethod.invoke(dietaryController, model);
     }
 
     /*
      * Verify that processAddSkillForm saves a new skill to the database
      * */
     @Test
-    public void testNewSkillIsSaved (@Mocked SkillRepository skillRepository, @Mocked Errors errors) throws ClassNotFoundException, NoSuchMethodException, NoSuchFieldException, IllegalAccessException, InvocationTargetException {
+    public void testNewSkillIsSaved (@Mocked DietaryRepository dietaryRepository, @Mocked Errors errors) throws ClassNotFoundException, NoSuchMethodException, NoSuchFieldException, IllegalAccessException, InvocationTargetException {
         Class skillControllerClass = getClassByName("controllers.SkillController");
-        Method processAddSkillFormMethod = skillControllerClass.getMethod("processAddSkillForm", Skill.class, Errors.class, Model.class);
-        Method saveMethod = SkillRepository.class.getMethod("save", Object.class);
+        Method processAddSkillFormMethod = skillControllerClass.getMethod("processAddSkillForm", Dietary.class, Errors.class, Model.class);
+        Method saveMethod = DietaryRepository.class.getMethod("save", Object.class);
 
-        Skill skill = new Skill();
-        skill.setName("Java");
+        Dietary dietary = new Dietary();
+        dietary.setName("Java");
 
         new Expectations() {{
-            saveMethod.invoke(skillRepository, skill);
+            saveMethod.invoke(dietaryRepository, dietary);
         }};
 
         Model model = new ExtendedModelMap();
-        SkillController skillController = new SkillController();
+        DietaryController dietaryController = new DietaryController();
         Field skillRepositoryField = skillControllerClass.getDeclaredField("skillRepository");
         skillRepositoryField.setAccessible(true);
-        skillRepositoryField.set(skillController, skillRepository);
-        processAddSkillFormMethod.invoke(skillController, skill, errors, model);
+        skillRepositoryField.set(dietaryController, dietaryRepository);
+        processAddSkillFormMethod.invoke(dietaryController, dietary, errors, model);
     }
 
     /*
      * Verifies that displayViewSkill calls findById to retrieve a skill object
      * */
     @Test
-    public void testDisplayViewSkillCallsFindById (@Mocked SkillRepository skillRepository) throws ClassNotFoundException, NoSuchMethodException, NoSuchFieldException, IllegalAccessException, InvocationTargetException {
+    public void testDisplayViewSkillCallsFindById (@Mocked DietaryRepository dietaryRepository) throws ClassNotFoundException, NoSuchMethodException, NoSuchFieldException, IllegalAccessException, InvocationTargetException {
         Class skillControllerClass = getClassByName("controllers.SkillController");
         Method displayViewSkillMethod = skillControllerClass.getMethod("displayViewSkill", Model.class, int.class);
 
         new Expectations() {{
-            skillRepository.findById(1);
+            dietaryRepository.findById(1);
         }};
 
         Model model = new ExtendedModelMap();
-        SkillController skillController = new SkillController();
+        DietaryController dietaryController = new DietaryController();
         Field skillRepositoryField = skillControllerClass.getDeclaredField("skillRepository");
         skillRepositoryField.setAccessible(true);
-        skillRepositoryField.set(skillController, skillRepository);
-        displayViewSkillMethod.invoke(skillController, model, 1);
+        skillRepositoryField.set(dietaryController, dietaryRepository);
+        displayViewSkillMethod.invoke(dietaryController, model, 1);
     }
 
     // --- END CONTROLLER TESTS --- //

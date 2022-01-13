@@ -1,20 +1,18 @@
 package org.launchcode.techjobs.persistent.controllers;
 
 import org.launchcode.techjobs.persistent.models.Employer;
-import org.launchcode.techjobs.persistent.models.Job;
-import org.launchcode.techjobs.persistent.models.Skill;
+import org.launchcode.techjobs.persistent.models.Recipe;
+import org.launchcode.techjobs.persistent.models.Dietary;
 import org.launchcode.techjobs.persistent.models.data.EmployerRepository;
-import org.launchcode.techjobs.persistent.models.data.JobRepository;
-import org.launchcode.techjobs.persistent.models.data.SkillRepository;
-import org.launchcode.techjobs.persistent.models.dto.JobSkillDTO;
+import org.launchcode.techjobs.persistent.models.data.RecipeRepository;
+import org.launchcode.techjobs.persistent.models.data.DietaryRepository;
+import org.launchcode.techjobs.persistent.models.dto.RecipeDietaryDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,39 +23,39 @@ import java.util.Optional;
 public class HomeController {
 
     @Autowired
-    private JobRepository jobRepository;
+    private RecipeRepository recipeRepository;
 
     @Autowired
     private EmployerRepository employerRepository;
 
     @Autowired
-    private SkillRepository skillRepository;
+    private DietaryRepository dietaryRepository;
 
     @RequestMapping("")
     public String index(Model model) {
 
-        model.addAttribute("title", "My Jobs");
-        model.addAttribute("jobs", jobRepository.findAll());
+        model.addAttribute("title", "My Recipes");
+        model.addAttribute("recipes", recipeRepository.findAll());
         return "index";
     }
 
     @GetMapping("add")
-    public String displayAddJobForm(Model model) {
-        model.addAttribute("title", "Add Job");
-        model.addAttribute(new Job());
+    public String displayAddRecipeForm(Model model) {
+        model.addAttribute("title", "Add Recipe");
+        model.addAttribute(new Recipe());
         model.addAttribute("employers", employerRepository.findAll());
-        model.addAttribute("skills", skillRepository.findAll());
-        model.addAttribute("jobSkill", new JobSkillDTO());
+        model.addAttribute("dietaries", dietaryRepository.findAll());
+        model.addAttribute("recipeDietary", new RecipeDietaryDTO());
 
         return "add";
     }
 
     @PostMapping("add")
-    public String processAddJobForm(@ModelAttribute Job newJob, Errors errors, Model model, @RequestParam int employerId, @RequestParam List<Integer> skills) {
+    public String processAddRecipeForm(@ModelAttribute Recipe newRecipe, Errors errors, Model model, @RequestParam int employerId, @RequestParam List<Integer> dietaries) {
         if (errors.hasErrors()) {
             model.addAttribute("title", "Add Job");
             model.addAttribute("employers", employerRepository.findAll());
-            model.addAttribute("skills", skillRepository.findAll());
+            model.addAttribute("dietaries", dietaryRepository.findAll());
             return "add";
         }
 
@@ -65,43 +63,41 @@ public class HomeController {
         Optional<Employer> maybeEmployer = employerRepository.findById(employerId);
         if (maybeEmployer.isPresent()) {
             Employer employer = maybeEmployer.get();
-            newJob.setEmployer(employer);
+            newRecipe.setEmployer(employer);
         } else {
             model.addAttribute("title", "Invalid Employer ID: " + employerId);
             return "add";
         }
 
-        // Loop through all skillIds in DB. Return to Add Job page if any of them are not in DB.
-        for (Integer skillId : skills) {
-            Optional<Skill> maybeSkill = skillRepository.findById(skillId);
-            if (maybeSkill.isEmpty()) {
-                model.addAttribute("title", "Invalid Skill ID: " + skillId);
+        // Loop through all dietaryIds in DB. Return to Add Recipe page if any of them are not in DB.
+        for (Integer dietaryId : dietaries) {
+            Optional<Dietary> maybeDietary = dietaryRepository.findById(dietaryId);
+            if (maybeDietary.isEmpty()) {
+                model.addAttribute("title", "Invalid Dietary Restriction ID: " + dietaryId);
                 return "add";
             }
         }
 
-        List<Skill> skillObjs = (List<Skill>) skillRepository.findAllById(skills);
-        newJob.setSkills(skillObjs);
+        List<Dietary> dietaryObjs = (List<Dietary>) dietaryRepository.findAllById(dietaries);
+        newRecipe.setDietaries(dietaryObjs);
 
-        newJob = jobRepository.save(newJob);
+        newRecipe = recipeRepository.save(newRecipe);
 
-        return "redirect:/view/" + newJob.getId();
-
+        return "redirect:/view/" + newRecipe.getId();
     }
 
-    @GetMapping("view/{jobId}")
-    public String displayViewJob(Model model, @PathVariable int jobId) {
-        Optional<Job> result = jobRepository.findById(jobId);
+    @GetMapping("view/{recipeId}")
+    public String displayViewRecipe(Model model, @PathVariable int recipeId) {
+        Optional<Recipe> result = recipeRepository.findById(recipeId);
         if (result.isPresent()) {
-            Job job = result.get();
-            model.addAttribute("title", job.getName() + " Details");
-            model.addAttribute("job", job);
-            model.addAttribute("employer", job.getEmployer());
-            model.addAttribute("skills", job.getSkills());
+            Recipe recipe = result.get();
+            model.addAttribute("title", recipe.getName() + " Details");
+            model.addAttribute("recipe", recipe);
+            model.addAttribute("employer", recipe.getEmployer());
+            model.addAttribute("dietaries", recipe.getDietaries());
         } else {
-            model.addAttribute("title", "Invalid Job ID: " + jobId);
+            model.addAttribute("title", "Invalid Recipe ID: " + recipeId);
         }
-
         return "view";
     }
 

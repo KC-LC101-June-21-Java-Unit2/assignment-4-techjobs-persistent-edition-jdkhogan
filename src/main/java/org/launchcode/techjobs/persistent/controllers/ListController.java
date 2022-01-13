@@ -1,10 +1,10 @@
 package org.launchcode.techjobs.persistent.controllers;
 
-import org.launchcode.techjobs.persistent.models.Job;
+import org.launchcode.techjobs.persistent.models.Recipe;
 import org.launchcode.techjobs.persistent.models.data.EmployerRepository;
-import org.launchcode.techjobs.persistent.models.data.JobRepository;
-import org.launchcode.techjobs.persistent.models.JobData;
-import org.launchcode.techjobs.persistent.models.data.SkillRepository;
+import org.launchcode.techjobs.persistent.models.data.RecipeRepository;
+import org.launchcode.techjobs.persistent.models.RecipeData;
+import org.launchcode.techjobs.persistent.models.data.DietaryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,13 +21,13 @@ import java.util.HashMap;
 public class ListController {
 
     @Autowired
-    private JobRepository jobRepository;
+    private RecipeRepository recipeRepository;
 
     @Autowired
     private EmployerRepository employerRepository;
 
     @Autowired
-    private SkillRepository skillRepository;`
+    private DietaryRepository dietaryRepository;
 
     static HashMap<String, String> columnChoices = new HashMap<>();
 
@@ -35,30 +35,30 @@ public class ListController {
 
         columnChoices.put("all", "All");
         columnChoices.put("employer", "Employer");
-        columnChoices.put("skill", "Skill");
+        columnChoices.put("dietary", "Dietary Restrictions");
 
     }
 
     @RequestMapping("")
     public String list(Model model) {
         model.addAttribute("employers", employerRepository.findAll());
-        model.addAttribute("skills", skillRepository.findAll());
+        model.addAttribute("dietaries", dietaryRepository.findAll());
         return "list";
     }
 
-    @RequestMapping(value = "jobs")
+    @RequestMapping(value = "recipes")
     public String listJobsByColumnAndValue(Model model, @RequestParam String column, @RequestParam String value) {
-        Iterable<Job> jobs;
+        Iterable<Recipe> recipes;
         if (column.toLowerCase().equals("all")){
-            jobs = jobRepository.findAll();
-            model.addAttribute("title", "All Jobs");
+            recipes = recipeRepository.findAll();
+            model.addAttribute("title", "All Recipes");
         } else {
-            jobs = JobData.findByColumnAndValue(column, value, jobRepository.findAll());
-            model.addAttribute("title", "Jobs with " + columnChoices.get(column) + ": " + value);
+            recipes = RecipeData.findByColumnAndValue(column, value, recipeRepository.findAll());
+            model.addAttribute("title", "Recipes that match " + columnChoices.get(column) + ": " + value);
         }
-        model.addAttribute("jobs", jobs);
+        model.addAttribute("recipes", recipes);
 
-        return "list-jobs";
+        return "list-recipes";
     }
 
 }

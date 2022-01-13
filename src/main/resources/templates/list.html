@@ -8,30 +8,30 @@
 
 <div class="container body-content">
     <h1 th:text="${#strings.capitalizeWords(title)}"></h1>
-    <h2 class = "centered">View Jobs By Category</h2>
+    <h2 class = "centered">View Recipes By Category</h2>
 </div>
 
 <table class="centeredTable">
     <tr>
         <th>All</th>
         <th>Employer</th>
-        <th>Skill</th>
+        <th>Dietary Restriction</th>
     </tr>
 
     <tr>
         <td>
             <li>
-                <a th:href="@{/list/jobs(column='All',value='View All')}">View All</a>
+                <a th:href="@{/list/recipes(column='All',value='View All')}">View All</a>
             </li>
         </td>
         <td>
             <li th:each="employer : ${employers}">
-                <a th:href="@{/list/jobs(column=employer,value=${employer.name})}" th:text="${employer.name}"></a>
+                <a th:href="@{/list/recipes(column=employer,value=${employer.name})}" th:text="${employer.name}"></a>
             </li>
         </td>
         <td>
-            <li th:each="skill : ${skills}">
-                <a th:href="@{/list/jobs(column=skill,value=${skill.name})}" th:text="${skill.name}"></a>
+            <li th:each="dietary : ${dietaries}">
+                <a th:href="@{/list/recipes(column=dietary,value=${dietary.name})}" th:text="${dietary.name}"></a>
             </li>
         </td>
     </tr>

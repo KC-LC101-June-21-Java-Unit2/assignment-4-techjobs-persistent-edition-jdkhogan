@@ -6,21 +6,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Job extends AbstractEntity{
+public class Recipe extends AbstractEntity{
 
     @ManyToOne
     @NotNull
     private Employer employer;
 
     @ManyToMany
-    private List<Skill> skills = new ArrayList<>();
+    private List<Dietary> dietaries = new ArrayList<>();
 
-    public Job(Employer employer, List<Skill> skills) {
+    public Recipe(Employer employer, List<Dietary> dietaries) {
         this.employer = employer;
-        this.skills = skills;
+        this.dietaries = dietaries;
     }
 
-    public Job() {}
+    public Recipe() {}
 
     // Getters and setters.
     public Employer getEmployer() {
@@ -31,16 +31,16 @@ public class Job extends AbstractEntity{
         this.employer = employer;
     }
 
-    public List<Skill> getSkills() {
-        return skills;
+    public List<Dietary> getDietaries() {
+        return dietaries;
     }
 
-    public void setSkills(List<Skill> skills) {
-        this.skills = skills;
+    public void setDietaries(List<Dietary> dietaries) {
+        this.dietaries = dietaries;
     }
 
-    public void addSkill(Skill skill) {
-        this.skills.add(skill);
+    public void addDietary(Dietary dietary) {
+        this.dietaries.add(dietary);
     }
 
 }

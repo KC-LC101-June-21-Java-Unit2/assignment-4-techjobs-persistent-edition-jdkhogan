@@ -8,21 +8,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Skill extends AbstractEntity {
+public class Dietary extends AbstractEntity {
 
     @NotBlank(message = "Please enter description of up to 500 characters")
     @Size(max = 500, message = "Please enter description of up to 500 characters")
     private String description;
 
 
-    @ManyToMany(mappedBy = "skills")
-    private final List<Job> jobs = new ArrayList<>();
+    @ManyToMany(mappedBy = "dietaries")
+    private final List<Recipe> recipes = new ArrayList<>();
 
-    public Skill(String description) {
+    public Dietary(String description) {
         this.description = description;
     }
 
-    public Skill() {}
+    public Dietary() {}
 
     public String getDescription() {
         return description;
@@ -32,11 +32,11 @@ public class Skill extends AbstractEntity {
         this.description = description;
     }
 
-    public List<Job> getJobs() {
-        return jobs;
+    public List<Recipe> getRecipes() {
+        return recipes;
     }
 
-    public void addJob(Job job) {
-        this.jobs.add(job);
+    public void addRecipe(Recipe recipe) {
+        this.recipes.add(recipe);
     }
 }

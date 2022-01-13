@@ -50,9 +50,9 @@ public class TestTaskThree extends AbstractTest {
         // verify jobs is initially an empty ArrayList
         Employer employer = new Employer();
         jobsField.setAccessible(true);
-        ArrayList<Job> initializedList = (ArrayList<Job>) jobsField.get(employer);
+        ArrayList<Recipe> initializedList = (ArrayList<Recipe>) jobsField.get(employer);
 
-        for (Job item : initializedList) {
+        for (Recipe item : initializedList) {
             fail("jobs should be initialized to an empty ArrayList");
         }
     }
@@ -149,7 +149,7 @@ public class TestTaskThree extends AbstractTest {
      * Verifies that HomeController.displayAddJobForm calls employerRepository.findAll()
      * */
     @Test
-    public void testHomeControllerFetchesEmployers(@Mocked EmployerRepository employerRepository, @Mocked SkillRepository skillRepository) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
+    public void testHomeControllerFetchesEmployers(@Mocked EmployerRepository employerRepository, @Mocked DietaryRepository dietaryRepository) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
         Class homeControllerClass = getClassByName("controllers.HomeController");
         HomeController homeController = new HomeController();
 
@@ -163,7 +163,7 @@ public class TestTaskThree extends AbstractTest {
         try {
             skillRepositoryField = homeControllerClass.getDeclaredField("skillRepository");
             skillRepositoryField.setAccessible(true);
-            skillRepositoryField.set(homeController, skillRepository);
+            skillRepositoryField.set(homeController, dietaryRepository);
         } catch (NoSuchFieldException e) {
             // do nothing
         }
@@ -174,7 +174,7 @@ public class TestTaskThree extends AbstractTest {
             employerRepository.findAll();
         }};
 
-        homeController.displayAddJobForm(model);
+        homeController.displayAddRecipeForm(model);
     }
 
     /*
