@@ -8,5 +8,5 @@ import javax.transaction.Transactional;
 
 @Repository
 @Transactional
-public interface DietaryRepository extends CrudRepository<DietaryRestriction, Integer> {
+public interface DietaryRestrictionRepository extends CrudRepository<DietaryRestriction, Integer> {
 }

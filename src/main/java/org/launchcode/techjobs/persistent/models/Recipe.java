@@ -10,25 +10,25 @@ public class Recipe extends AbstractEntity{
 
     @ManyToOne
     @NotNull
-    private Employer employer;
+    private Cuisine cuisine;
 
     @ManyToMany
     private List<DietaryRestriction> dietaryRestrictions = new ArrayList<>();
 
-    public Recipe(Employer employer, List<DietaryRestriction> dietaryRestrictions) {
-        this.employer = employer;
+    public Recipe(Cuisine cuisine, List<DietaryRestriction> dietaryRestrictions) {
+        this.cuisine = cuisine;
         this.dietaryRestrictions = dietaryRestrictions;
     }
 
     public Recipe() {}
 
     // Getters and setters.
-    public Employer getEmployer() {
-        return employer;
+    public Cuisine getCuisine() {
+        return cuisine;
     }
 
-    public void setEmployer(Employer employer) {
-        this.employer = employer;
+    public void setCuisine(Cuisine cuisine) {
+        this.cuisine = cuisine;
     }
 
     public List<DietaryRestriction> getDietaryRestrictions() {

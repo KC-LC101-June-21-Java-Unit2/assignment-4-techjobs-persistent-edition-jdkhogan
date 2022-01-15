@@ -442,7 +442,7 @@ public class TestTaskTwo extends AbstractTest {
             fail("SkillController does not have an skillRepository field");
         }
 
-        assertEquals(DietaryRepository.class, skillRepositoryField.getType(), "skillRepository must be of type SkillRepository");
+        assertEquals(DietaryRestrictionRepository.class, skillRepositoryField.getType(), "skillRepository must be of type SkillRepository");
         assertNotNull(skillRepositoryField.getAnnotation(Autowired.class), "skillRepository must have the @Autowired annotation");
     }
 
@@ -450,7 +450,7 @@ public class TestTaskTwo extends AbstractTest {
      * Verifies that SkillController.index is properly defined
      * */
     @Test
-    public void testSkillControllerIndexMethodDefinition (@Mocked DietaryRepository dietaryRepository) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException, NoSuchFieldException {
+    public void testSkillControllerIndexMethodDefinition (@Mocked DietaryRestrictionRepository dietaryRestrictionRepository) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException, NoSuchFieldException {
         Class skillControllerClass = getClassByName("controllers.SkillController");
         Method indexMethod = null;
 
@@ -478,14 +478,14 @@ public class TestTaskTwo extends AbstractTest {
 
         // Verify that index calls skillRepository.findAll()
         new Expectations() {{
-            dietaryRepository.findAll();
+            dietaryRestrictionRepository.findAll();
         }};
 
         Model model = new ExtendedModelMap();
         DietaryRestrictionController dietaryRestrictionController = new DietaryRestrictionController();
         Field skillRepositoryField = skillControllerClass.getDeclaredField("skillRepository");
         skillRepositoryField.setAccessible(true);
-        skillRepositoryField.set(dietaryRestrictionController, dietaryRepository);
+        skillRepositoryField.set(dietaryRestrictionController, dietaryRestrictionRepository);
         indexMethod.invoke(dietaryRestrictionController, model);
     }
 
@@ -493,23 +493,23 @@ public class TestTaskTwo extends AbstractTest {
      * Verify that processAddSkillForm saves a new skill to the database
      * */
     @Test
-    public void testNewSkillIsSaved (@Mocked DietaryRepository dietaryRepository, @Mocked Errors errors) throws ClassNotFoundException, NoSuchMethodException, NoSuchFieldException, IllegalAccessException, InvocationTargetException {
+    public void testNewSkillIsSaved (@Mocked DietaryRestrictionRepository dietaryRestrictionRepository, @Mocked Errors errors) throws ClassNotFoundException, NoSuchMethodException, NoSuchFieldException, IllegalAccessException, InvocationTargetException {
         Class skillControllerClass = getClassByName("controllers.SkillController");
         Method processAddSkillFormMethod = skillControllerClass.getMethod("processAddSkillForm", DietaryRestriction.class, Errors.class, Model.class);
-        Method saveMethod = DietaryRepository.class.getMethod("save", Object.class);
+        Method saveMethod = DietaryRestrictionRepository.class.getMethod("save", Object.class);
 
         DietaryRestriction dietaryRestriction = new DietaryRestriction();
         dietaryRestriction.setName("Java");
 
         new Expectations() {{
-            saveMethod.invoke(dietaryRepository, dietaryRestriction);
+            saveMethod.invoke(dietaryRestrictionRepository, dietaryRestriction);
         }};
 
         Model model = new ExtendedModelMap();
         DietaryRestrictionController dietaryRestrictionController = new DietaryRestrictionController();
         Field skillRepositoryField = skillControllerClass.getDeclaredField("skillRepository");
         skillRepositoryField.setAccessible(true);
-        skillRepositoryField.set(dietaryRestrictionController, dietaryRepository);
+        skillRepositoryField.set(dietaryRestrictionController, dietaryRestrictionRepository);
         processAddSkillFormMethod.invoke(dietaryRestrictionController, dietaryRestriction, errors, model);
     }
 
@@ -517,19 +517,19 @@ public class TestTaskTwo extends AbstractTest {
      * Verifies that displayViewSkill calls findById to retrieve a skill object
      * */
     @Test
-    public void testDisplayViewSkillCallsFindById (@Mocked DietaryRepository dietaryRepository) throws ClassNotFoundException, NoSuchMethodException, NoSuchFieldException, IllegalAccessException, InvocationTargetException {
+    public void testDisplayViewSkillCallsFindById (@Mocked DietaryRestrictionRepository dietaryRestrictionRepository) throws ClassNotFoundException, NoSuchMethodException, NoSuchFieldException, IllegalAccessException, InvocationTargetException {
         Class skillControllerClass = getClassByName("controllers.SkillController");
         Method displayViewSkillMethod = skillControllerClass.getMethod("displayViewSkill", Model.class, int.class);
 
         new Expectations() {{
-            dietaryRepository.findById(1);
+            dietaryRestrictionRepository.findById(1);
         }};
 
         Model model = new ExtendedModelMap();
         DietaryRestrictionController dietaryRestrictionController = new DietaryRestrictionController();
         Field skillRepositoryField = skillControllerClass.getDeclaredField("skillRepository");
         skillRepositoryField.setAccessible(true);
-        skillRepositoryField.set(dietaryRestrictionController, dietaryRepository);
+        skillRepositoryField.set(dietaryRestrictionController, dietaryRestrictionRepository);
         displayViewSkillMethod.invoke(dietaryRestrictionController, model, 1);
     }
 

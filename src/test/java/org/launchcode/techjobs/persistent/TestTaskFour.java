@@ -116,7 +116,7 @@ public class TestTaskFour extends AbstractTest {
             fail("HomeController should have a skillRepository field");
         }
 
-        assertEquals(DietaryRepository.class, skillRepositoryField.getType(), "skillRepository is of incorrect type");
+        assertEquals(DietaryRestrictionRepository.class, skillRepositoryField.getType(), "skillRepository is of incorrect type");
         assertNotNull(skillRepositoryField.getAnnotation(Autowired.class), "skillRepository must be @Autowired");
     }
 
@@ -125,7 +125,7 @@ public class TestTaskFour extends AbstractTest {
     * */
     @Test
     public void testProcessAddJobFormHandlesSkillsProperly (
-            @Mocked DietaryRepository dietaryRepository,
+            @Mocked DietaryRestrictionRepository dietaryRestrictionRepository,
             @Mocked EmployerRepository employerRepository,
             @Mocked RecipeRepository recipeRepository,
             @Mocked Recipe recipe,
@@ -135,7 +135,7 @@ public class TestTaskFour extends AbstractTest {
         Method processAddJobFormMethod = homeControllerClass.getMethod("processAddJobForm", Recipe.class, Errors.class, Model.class, int.class, List.class);
 
         new Expectations() {{
-            dietaryRepository.findAllById((Iterable<Integer>) any);
+            dietaryRestrictionRepository.findAllById((Iterable<Integer>) any);
             recipe.setDietaryRestrictions((List<DietaryRestriction>) any);
         }};
 
@@ -144,7 +144,7 @@ public class TestTaskFour extends AbstractTest {
 
         Field skillRepositoryField = homeControllerClass.getDeclaredField("skillRepository");
         skillRepositoryField.setAccessible(true);
-        skillRepositoryField.set(homeController, dietaryRepository);
+        skillRepositoryField.set(homeController, dietaryRestrictionRepository);
 
         Field employerRepositoryField = homeControllerClass.getDeclaredField("employerRepository");
         employerRepositoryField.setAccessible(true);
@@ -181,7 +181,7 @@ public class TestTaskFour extends AbstractTest {
             fail("ListController must have a skillRepository field");
         }
 
-        assertEquals(DietaryRepository.class, skillRepositoryField.getType());
+        assertEquals(DietaryRestrictionRepository.class, skillRepositoryField.getType());
         assertNotNull(skillRepositoryField.getAnnotation(Autowired.class));
     }
 
@@ -189,20 +189,20 @@ public class TestTaskFour extends AbstractTest {
     * Verifies that ListController.list sets the correct model attributes using skill/employerRepository objects
     * */
     @Test
-    public void testListControllerListMethodSetsFormFieldData (@Mocked Model model, @Mocked DietaryRepository dietaryRepository, @Mocked EmployerRepository employerRepository) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
+    public void testListControllerListMethodSetsFormFieldData (@Mocked Model model, @Mocked DietaryRestrictionRepository dietaryRestrictionRepository, @Mocked EmployerRepository employerRepository) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
         Class listControllerClass = getClassByName("controllers.ListController");
         ListController listController = new ListController();
 
         new Expectations() {{
             model.addAttribute("employers", any);
             model.addAttribute("skills", any);
-            dietaryRepository.findAll();
+            dietaryRestrictionRepository.findAll();
             employerRepository.findAll();
         }};
 
         Field skillRepositoryField = listControllerClass.getDeclaredField("skillRepository");
         skillRepositoryField.setAccessible(true);
-        skillRepositoryField.set(listController, dietaryRepository);
+        skillRepositoryField.set(listController, dietaryRestrictionRepository);
 
         Field employerRepositoryField = listControllerClass.getDeclaredField("employerRepository");
         employerRepositoryField.setAccessible(true);

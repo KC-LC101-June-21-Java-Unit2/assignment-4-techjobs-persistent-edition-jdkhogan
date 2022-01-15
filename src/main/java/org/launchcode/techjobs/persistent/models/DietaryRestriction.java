@@ -15,7 +15,7 @@ public class DietaryRestriction extends AbstractEntity {
     private String description;
 
 
-    @ManyToMany(mappedBy = "dietaries")
+    @ManyToMany(mappedBy = "dietaryRestrictions")
     private final List<Recipe> recipes = new ArrayList<>();
 
     public DietaryRestriction(String description) {

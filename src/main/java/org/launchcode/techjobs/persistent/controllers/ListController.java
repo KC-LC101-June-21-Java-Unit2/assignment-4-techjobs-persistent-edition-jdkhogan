@@ -4,7 +4,7 @@ import org.launchcode.techjobs.persistent.models.Recipe;
 import org.launchcode.techjobs.persistent.models.data.EmployerRepository;
 import org.launchcode.techjobs.persistent.models.data.RecipeRepository;
 import org.launchcode.techjobs.persistent.models.RecipeData;
-import org.launchcode.techjobs.persistent.models.data.DietaryRepository;
+import org.launchcode.techjobs.persistent.models.data.DietaryRestrictionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,7 +27,7 @@ public class ListController {
     private EmployerRepository employerRepository;
 
     @Autowired
-    private DietaryRepository dietaryRepository;
+    private DietaryRestrictionRepository dietaryRestrictionRepository;
 
     static HashMap<String, String> columnChoices = new HashMap<>();
 
@@ -42,7 +42,7 @@ public class ListController {
     @RequestMapping("")
     public String list(Model model) {
         model.addAttribute("employers", employerRepository.findAll());
-        model.addAttribute("dietaries", dietaryRepository.findAll());
+        model.addAttribute("dietaries", dietaryRestrictionRepository.findAll());
         return "list";
     }
 

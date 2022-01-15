@@ -149,7 +149,7 @@ public class TestTaskThree extends AbstractTest {
      * Verifies that HomeController.displayAddJobForm calls employerRepository.findAll()
      * */
     @Test
-    public void testHomeControllerFetchesEmployers(@Mocked EmployerRepository employerRepository, @Mocked DietaryRepository dietaryRepository) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
+    public void testHomeControllerFetchesEmployers(@Mocked EmployerRepository employerRepository, @Mocked DietaryRestrictionRepository dietaryRestrictionRepository) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
         Class homeControllerClass = getClassByName("controllers.HomeController");
         HomeController homeController = new HomeController();
 
@@ -163,7 +163,7 @@ public class TestTaskThree extends AbstractTest {
         try {
             skillRepositoryField = homeControllerClass.getDeclaredField("skillRepository");
             skillRepositoryField.setAccessible(true);
-            skillRepositoryField.set(homeController, dietaryRepository);
+            skillRepositoryField.set(homeController, dietaryRestrictionRepository);
         } catch (NoSuchFieldException e) {
             // do nothing
         }

@@ -1,7 +1,7 @@
 package org.launchcode.techjobs.persistent.controllers;
 
 import org.launchcode.techjobs.persistent.models.DietaryRestriction;
-import org.launchcode.techjobs.persistent.models.data.DietaryRepository;
+import org.launchcode.techjobs.persistent.models.data.DietaryRestrictionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,12 +16,12 @@ import java.util.Optional;
 public class DietaryRestrictionController {
 
     @Autowired
-    private DietaryRepository dietaryRepository;
+    private DietaryRestrictionRepository dietaryRestrictionRepository;
 
     @RequestMapping("")
     public String index(Model model) {
-        model.addAttribute("title","DietaryRestriction Restrictions");
-        model.addAttribute("dietaryrestrictions", dietaryRepository.findAll());
+        model.addAttribute("title","Dietary Restrictions");
+        model.addAttribute("dietaryrestrictions", dietaryRestrictionRepository.findAll());
         return "dietaryrestrictions/index";
     }
 
@@ -34,26 +34,43 @@ public class DietaryRestrictionController {
     @PostMapping("add")
     public String processAddDietaryForm(@ModelAttribute @Valid DietaryRestriction newDietaryRestriction, Errors errors, Model model) {
         if (errors.hasErrors()) {
-            model.addAttribute("title","DietaryRestriction Restrictions");
+            model.addAttribute("title","Dietary Restrictions");
             model.addAttribute(newDietaryRestriction);
             return "dietaryrestrictions/add";
         }
 
-        newDietaryRestriction = dietaryRepository.save(newDietaryRestriction);
+        newDietaryRestriction = dietaryRestrictionRepository.save(newDietaryRestriction);
         return "redirect:";
     }
 
-    @GetMapping("view/{dietaryId}")
-    public String displayViewDietary(Model model, @PathVariable int dietaryId) {
-        Optional optDietary = dietaryRepository.findById(dietaryId);
+    @GetMapping("view/{dietaryRestrictionId}")
+    public String displayViewDietaryRestriction(Model model, @PathVariable int dietaryRestrictionId) {
+        Optional optDietaryRestriction = dietaryRestrictionRepository.findById(dietaryRestrictionId);
 
-        if (optDietary.isPresent()) {
-            DietaryRestriction dietaryRestriction = (DietaryRestriction) optDietary.get();
+        if (optDietaryRestriction.isPresent()) {
+            DietaryRestriction dietaryRestriction = (DietaryRestriction) optDietaryRestriction.get();
             model.addAttribute("dietaryRestriction", dietaryRestriction);
-            return "dietaryRestriction/view";
+            return "dietaryrestrictions/view";
         } else {
             return "redirect:../";
         }
+    }
+
+    @GetMapping("delete")
+    public String displayDeleteDietaryRestrictionForm(Model model){
+        model.addAttribute("title","Delete Dietary Restriction");
+        model.addAttribute("dietaryRestrictions",dietaryRestrictionRepository.findAll());
+        return "dietaryrestrictions/delete";
+    }
+
+    @PostMapping("delete")
+    public String deleteDietaryRestrictionListings(@RequestParam(required = false) int[] dietaryRestrictionId){
+        if(dietaryRestrictionId!=null) {
+            for (int id : dietaryRestrictionId) {
+                dietaryRestrictionRepository.deleteById(id);
+            }
+        }
+        return "redirect:";
     }
 
 }

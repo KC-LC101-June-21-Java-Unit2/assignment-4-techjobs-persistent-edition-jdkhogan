@@ -23,11 +23,11 @@ public class RecipeDietaryRestrictionDTO {
         this.recipe = recipe;
     }
 
-    public DietaryRestriction getDietary() {
+    public DietaryRestriction getDietaryRestriction() {
         return dietaryRestriction;
     }
 
-    public void setDietary(DietaryRestriction dietaryRestriction) {
+    public void setDietaryRestriction(DietaryRestriction dietaryRestriction) {
         this.dietaryRestriction = dietaryRestriction;
     }
 }
