@@ -4,7 +4,7 @@ import mockit.Expectations;
 import mockit.Mocked;
 import org.junit.jupiter.api.Test;
 import org.launchcode.techjobs.persistent.controllers.EmployerController;
-import org.launchcode.techjobs.persistent.controllers.DietaryController;
+import org.launchcode.techjobs.persistent.controllers.DietaryRestrictionController;
 import org.launchcode.techjobs.persistent.models.data.*;
 import org.launchcode.techjobs.persistent.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -482,11 +482,11 @@ public class TestTaskTwo extends AbstractTest {
         }};
 
         Model model = new ExtendedModelMap();
-        DietaryController dietaryController = new DietaryController();
+        DietaryRestrictionController dietaryRestrictionController = new DietaryRestrictionController();
         Field skillRepositoryField = skillControllerClass.getDeclaredField("skillRepository");
         skillRepositoryField.setAccessible(true);
-        skillRepositoryField.set(dietaryController, dietaryRepository);
-        indexMethod.invoke(dietaryController, model);
+        skillRepositoryField.set(dietaryRestrictionController, dietaryRepository);
+        indexMethod.invoke(dietaryRestrictionController, model);
     }
 
     /*
@@ -495,22 +495,22 @@ public class TestTaskTwo extends AbstractTest {
     @Test
     public void testNewSkillIsSaved (@Mocked DietaryRepository dietaryRepository, @Mocked Errors errors) throws ClassNotFoundException, NoSuchMethodException, NoSuchFieldException, IllegalAccessException, InvocationTargetException {
         Class skillControllerClass = getClassByName("controllers.SkillController");
-        Method processAddSkillFormMethod = skillControllerClass.getMethod("processAddSkillForm", Dietary.class, Errors.class, Model.class);
+        Method processAddSkillFormMethod = skillControllerClass.getMethod("processAddSkillForm", DietaryRestriction.class, Errors.class, Model.class);
         Method saveMethod = DietaryRepository.class.getMethod("save", Object.class);
 
-        Dietary dietary = new Dietary();
-        dietary.setName("Java");
+        DietaryRestriction dietaryRestriction = new DietaryRestriction();
+        dietaryRestriction.setName("Java");
 
         new Expectations() {{
-            saveMethod.invoke(dietaryRepository, dietary);
+            saveMethod.invoke(dietaryRepository, dietaryRestriction);
         }};
 
         Model model = new ExtendedModelMap();
-        DietaryController dietaryController = new DietaryController();
+        DietaryRestrictionController dietaryRestrictionController = new DietaryRestrictionController();
         Field skillRepositoryField = skillControllerClass.getDeclaredField("skillRepository");
         skillRepositoryField.setAccessible(true);
-        skillRepositoryField.set(dietaryController, dietaryRepository);
-        processAddSkillFormMethod.invoke(dietaryController, dietary, errors, model);
+        skillRepositoryField.set(dietaryRestrictionController, dietaryRepository);
+        processAddSkillFormMethod.invoke(dietaryRestrictionController, dietaryRestriction, errors, model);
     }
 
     /*
@@ -526,11 +526,11 @@ public class TestTaskTwo extends AbstractTest {
         }};
 
         Model model = new ExtendedModelMap();
-        DietaryController dietaryController = new DietaryController();
+        DietaryRestrictionController dietaryRestrictionController = new DietaryRestrictionController();
         Field skillRepositoryField = skillControllerClass.getDeclaredField("skillRepository");
         skillRepositoryField.setAccessible(true);
-        skillRepositoryField.set(dietaryController, dietaryRepository);
-        displayViewSkillMethod.invoke(dietaryController, model, 1);
+        skillRepositoryField.set(dietaryRestrictionController, dietaryRepository);
+        displayViewSkillMethod.invoke(dietaryRestrictionController, model, 1);
     }
 
     // --- END CONTROLLER TESTS --- //

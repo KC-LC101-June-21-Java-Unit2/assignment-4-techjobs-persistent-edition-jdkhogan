@@ -1,12 +1,12 @@
 package org.launchcode.techjobs.persistent.controllers;
 
+import org.launchcode.techjobs.persistent.models.DietaryRestriction;
 import org.launchcode.techjobs.persistent.models.Employer;
 import org.launchcode.techjobs.persistent.models.Recipe;
-import org.launchcode.techjobs.persistent.models.Dietary;
 import org.launchcode.techjobs.persistent.models.data.EmployerRepository;
 import org.launchcode.techjobs.persistent.models.data.RecipeRepository;
 import org.launchcode.techjobs.persistent.models.data.DietaryRepository;
-import org.launchcode.techjobs.persistent.models.dto.RecipeDietaryDTO;
+import org.launchcode.techjobs.persistent.models.dto.RecipeDietaryRestrictionDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,7 +45,7 @@ public class HomeController {
         model.addAttribute(new Recipe());
         model.addAttribute("employers", employerRepository.findAll());
         model.addAttribute("dietaries", dietaryRepository.findAll());
-        model.addAttribute("recipeDietary", new RecipeDietaryDTO());
+        model.addAttribute("recipeDietary", new RecipeDietaryRestrictionDTO());
 
         return "add";
     }
@@ -71,15 +71,15 @@ public class HomeController {
 
         // Loop through all dietaryIds in DB. Return to Add Recipe page if any of them are not in DB.
         for (Integer dietaryId : dietaries) {
-            Optional<Dietary> maybeDietary = dietaryRepository.findById(dietaryId);
+            Optional<DietaryRestriction> maybeDietary = dietaryRepository.findById(dietaryId);
             if (maybeDietary.isEmpty()) {
-                model.addAttribute("title", "Invalid Dietary Restriction ID: " + dietaryId);
+                model.addAttribute("title", "Invalid DietaryRestriction Restriction ID: " + dietaryId);
                 return "add";
             }
         }
 
-        List<Dietary> dietaryObjs = (List<Dietary>) dietaryRepository.findAllById(dietaries);
-        newRecipe.setDietaries(dietaryObjs);
+        List<DietaryRestriction> dietaryRestrictionObjs = (List<DietaryRestriction>) dietaryRepository.findAllById(dietaries);
+        newRecipe.setDietaryRestrictions(dietaryRestrictionObjs);
 
         newRecipe = recipeRepository.save(newRecipe);
 
@@ -94,7 +94,7 @@ public class HomeController {
             model.addAttribute("title", recipe.getName() + " Details");
             model.addAttribute("recipe", recipe);
             model.addAttribute("employer", recipe.getEmployer());
-            model.addAttribute("dietaries", recipe.getDietaries());
+            model.addAttribute("dietaries", recipe.getDietaryRestrictions());
         } else {
             model.addAttribute("title", "Invalid Recipe ID: " + recipeId);
         }

@@ -15,8 +15,8 @@
     </p>
     <p> Skills:
         <ul>
-            <li th:each="dietary : ${recipe.dietaries}">
-                <a th:href="@{'/dietary/view/' + ${dietary.id}}" th:text="${dietary.name}"></a>
+            <li th:each="dietaryRestriction : ${recipe.dietaryRestrictions}">
+                <a th:href="@{'/dietaryRestriction/view/' + ${dietaryRestriction.id}}" th:text="${dietaryRestriction.name}"></a>
             </li>
         </ul>
     </p>

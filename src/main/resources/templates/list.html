@@ -30,8 +30,8 @@
             </li>
         </td>
         <td>
-            <li th:each="dietary : ${dietaries}">
-                <a th:href="@{/list/recipes(column=dietary,value=${dietary.name})}" th:text="${dietary.name}"></a>
+            <li th:each="dietaryRestriction : ${dietaryRestrictions}">
+                <a th:href="@{/list/recipes(column=dietaryRestriction,value=${dietaryRestriction.name})}" th:text="${dietaryRestriction.name}"></a>
             </li>
         </td>
     </tr>

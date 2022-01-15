@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Dietary extends AbstractEntity {
+public class DietaryRestriction extends AbstractEntity {
 
     @NotBlank(message = "Please enter description of up to 500 characters")
     @Size(max = 500, message = "Please enter description of up to 500 characters")
@@ -18,11 +18,11 @@ public class Dietary extends AbstractEntity {
     @ManyToMany(mappedBy = "dietaries")
     private final List<Recipe> recipes = new ArrayList<>();
 
-    public Dietary(String description) {
+    public DietaryRestriction(String description) {
         this.description = description;
     }
 
-    public Dietary() {}
+    public DietaryRestriction() {}
 
     public String getDescription() {
         return description;

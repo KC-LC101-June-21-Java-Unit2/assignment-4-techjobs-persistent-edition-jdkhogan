@@ -30,13 +30,13 @@
 
     <div class="form-group">
         <label>Dietary Restrictions
-            <input type="checkbox" name="dietaries"
-                   th:each="dietary : ${dietaries}"
-                   th:text="${dietary.name}"
-                   th:value="${dietary.id}"
+            <input type="checkbox" name="dietaryRestrictions"
+                   th:each="dietaryRestriction : ${dietaryRestrictions}"
+                   th:text="${dietaryRestriction.name}"
+                   th:value="${dietaryRestriction.id}"
             />
             </th:block>
-            <a th:href="@{'/dietary/add'}">Add Dietary Restrictions</a>
+            <a th:href="@{'/dietaryRestriction/add'}">Add Dietary Restrictions</a>
         </label>
     </div>
 

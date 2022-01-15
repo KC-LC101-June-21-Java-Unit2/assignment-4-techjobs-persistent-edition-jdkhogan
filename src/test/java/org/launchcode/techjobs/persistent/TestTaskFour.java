@@ -50,8 +50,8 @@ public class TestTaskFour extends AbstractTest {
     public void testSkillJobsFieldHasCorrectType () throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         Class skillClass = getClassByName("models.Skill");
         Method getJobsMethod = skillClass.getMethod("getJobs");
-        Dietary dietary = new Dietary();
-        Object jobsObj = getJobsMethod.invoke(dietary);
+        DietaryRestriction dietaryRestriction = new DietaryRestriction();
+        Object jobsObj = getJobsMethod.invoke(dietaryRestriction);
         assertTrue(jobsObj instanceof List);
     }
 
@@ -136,7 +136,7 @@ public class TestTaskFour extends AbstractTest {
 
         new Expectations() {{
             dietaryRepository.findAllById((Iterable<Integer>) any);
-            recipe.setDietaries((List<Dietary>) any);
+            recipe.setDietaryRestrictions((List<DietaryRestriction>) any);
         }};
 
         Model model = new ExtendedModelMap();
@@ -154,7 +154,7 @@ public class TestTaskFour extends AbstractTest {
             jobRepositoryField.setAccessible(true);
             jobRepositoryField.set(homeController, recipeRepository);
 
-        processAddJobFormMethod.invoke(homeController, recipe, errors, model, 0, new ArrayList<Dietary>());
+        processAddJobFormMethod.invoke(homeController, recipe, errors, model, 0, new ArrayList<DietaryRestriction>());
     }
 
     /*
