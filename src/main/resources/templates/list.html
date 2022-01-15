@@ -14,24 +14,24 @@
 <table class="centeredTable">
     <tr>
         <th>All</th>
-        <th>Employer</th>
-        <th>Dietary Restriction</th>
+        <th>Dietary Restrictions</th>
+        <th>Meal Type</th>
     </tr>
 
     <tr>
         <td>
             <li>
-                <a th:href="@{/list/recipes(column='All',value='View All')}">View All</a>
+                <a th:href="@{/list/jobs(column='All',value='View All')}">View All</a>
             </li>
         </td>
         <td>
-            <li th:each="employer : ${employers}">
-                <a th:href="@{/list/recipes(column=employer,value=${employer.name})}" th:text="${employer.name}"></a>
+            <li th:each="dietaryRestrictions : ${dietRestrictions}">
+                <a th:href="@{/list/jobs(column=dietaryRestriction,value=${dietaryRestrictions.name})}" th:text="${dietaryRestriction.name}"></a>
             </li>
         </td>
         <td>
-            <li th:each="dietaryRestriction : ${dietaryRestrictions}">
-                <a th:href="@{/list/recipes(column=dietaryRestriction,value=${dietaryRestriction.name})}" th:text="${dietaryRestriction.name}"></a>
+            <li th:each="mealType : ${mealTypes}">
+                <a th:href="@{/list/jobs(column=mealType,value=${mealType.name})}" th:text="${mealType.name}"></a>
             </li>
         </td>
     </tr>
